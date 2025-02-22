@@ -1,20 +1,24 @@
-import { useState } from 'react'
-import { FaSearch, FaShoppingCart, FaUser, FaPhoneAlt, FaWhatsapp } from 'react-icons/fa'
-import { Navbar, NavbarBrand } from 'reactstrap'
+import { useState } from 'react';
+import { FaSearch, FaShoppingCart, FaUser, FaPhoneAlt, FaWhatsapp } from 'react-icons/fa';
+import { Navbar, NavbarBrand } from 'reactstrap';
+import Logo from '../assets/logo.jpeg';
 
-function NavMedNavbar() {
-  const [showSearch, setShowSearch] = useState(false)
-  const [searchTerm, setSearchTerm] = useState('')
+interface NavMedNavbarProps {
+  cartCount: number;
+}
+
+function NavMedNavbar({ cartCount }: NavMedNavbarProps) {
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    alert(`Searching for: ${searchTerm}`)
-    setShowSearch(false)
-  }
+    e.preventDefault();
+    alert(`Searching for: ${searchTerm}`);
+    setShowSearch(false);
+  };
 
   return (
     <div className="bg-light">
-      {/* TOP INFO BAR */}
       <div className="d-flex justify-content-between align-items-center px-3 py-1 bg-primary text-white small">
         <div className="d-flex align-items-center">
           <FaPhoneAlt className="me-2" />
@@ -29,18 +33,17 @@ function NavMedNavbar() {
         </div>
       </div>
 
-      {/* NAVBAR */}
       <Navbar expand="lg" light className="bg-light shadow-sm mb-3">
         <div className="container-fluid d-flex justify-content-between align-items-center">
-          {/* Brand */}
-          <NavbarBrand href="/" className="fw-bold">
-            NavMed
-          </NavbarBrand>
+          {!showSearch && (
+            <NavbarBrand href="/">
+              <img src={Logo} alt="NavMed" height="70" />
+            </NavbarBrand>
+          )}
 
-          {/* Icons Section */}
           <div className="d-flex align-items-center">
             {showSearch ? (
-              <form onSubmit={handleSearchSubmit} className="d-flex me-2">
+              <form onSubmit={handleSearchSubmit} className="d-flex w-100">
                 <input
                   type="text"
                   className="form-control me-2"
@@ -58,18 +61,26 @@ function NavMedNavbar() {
               </button>
             )}
 
-            <a href="/cart" className="btn btn-light me-2">
-              <FaShoppingCart />
-            </a>
-
-            <a href="/account" className="btn btn-light">
-              <FaUser />
-            </a>
+            {!showSearch && (
+              <>
+                <a href="/cart" className="btn btn-light me-2 position-relative" style={{ color: '#ec0e63' }}>
+                  <FaShoppingCart />
+                  {cartCount > 0 && (
+                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      {cartCount}
+                    </span>
+                  )}
+                </a>
+                <a href="/account" className="btn btn-light me-2" style={{ color: '#ec0e63' }}>
+                  <FaUser />
+                </a>
+              </>
+            )}
           </div>
         </div>
       </Navbar>
     </div>
-  )
+  );
 }
 
-export default NavMedNavbar
+export default NavMedNavbar;

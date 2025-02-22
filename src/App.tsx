@@ -3,14 +3,15 @@ import NavMedNavbar from './components/Navbar'
 import HomePage from './pages/HomePage'
 import ProductsPage from './pages/ProductsPage'
 
-function App() {
+const App: React.FC = () => {
+  const basename = process.env.NODE_ENV === 'production' ? '/navmed' : '';
   return (
-    <Router>
-      <NavMedNavbar />
+    <Router basename={basename}>
+      <NavMedNavbar cartCount={0} />
       <div className="container mt-4">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products" element={<ProductsPage setCartCount={() => {}} />} />
         </Routes>
       </div>
     </Router>
